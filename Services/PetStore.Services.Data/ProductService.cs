@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Microsoft.EntityFrameworkCore;
     using PetStore.Data.Common.Repositories;
     using PetStore.Data.Models;
 
@@ -18,36 +18,33 @@
             this.productRepo = productRepo;
         }
 
-        public ICollection<Product> GetAllByName(string nameSearch = EmptyString)
+        public async Task<ICollection<Product>> GetAllByName(string nameSearch = EmptyString)
         {
             if (nameSearch != EmptyString)
             {
-                return this.productRepo
+                return await this.productRepo
                     .All()
                     .Where(p => p.Name.ToLower().Contains(nameSearch.ToLower()))
-                    .ToArray();
+                    .ToArrayAsync();
             }
 
-            return this.productRepo.All().ToArray();
+            return await this.productRepo.All().ToArrayAsync();
         }
 
-        public ICollection<Product> GetAllByCategory(string categoryName = EmptyString)
+        public async Task<ICollection<Product>> GetAllByCategory(string categoryName = EmptyString)
         {
             if (categoryName != EmptyString)
             {
-                return this.productRepo
+                return await this.productRepo
                     .All()
                     .Where(p => p.Category.Name.ToLower().Contains(categoryName.ToLower()))
-                    .ToArray();
+                    .ToArrayAsync();
             }
 
-            return this.productRepo.All().ToArray();
+            return await this.productRepo.All().ToArrayAsync();
         }
 
-
-        public Product GetById(string id)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<Product> GetById(string id)
+            => await this.productRepo.All().FirstOrDefaultAsync(p => p.Id == id);
     }
 }

@@ -7,10 +7,10 @@
 
     public interface IProductService
     {
-        ICollection<Product> GetAllByName(string nameSearch);
+       Task<ICollection<Product>> GetAllByName(string nameSearch = "");
 
-        ICollection<Product> GetAllByCategory(string categoryName);
+       Task<ICollection<Product>> GetAllByCategory(string categoryName = "");
 
-        Product GetById(string id);
+       Task<Product> GetById(string id);
     }
 }
