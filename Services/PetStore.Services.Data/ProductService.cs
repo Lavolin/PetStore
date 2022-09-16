@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Microsoft.EntityFrameworkCore;
     using PetStore.Data.Common.Repositories;
     using PetStore.Data.Models;
@@ -18,33 +19,39 @@
             this.productRepo = productRepo;
         }
 
-        public async Task<ICollection<Product>> GetAllByName(string nameSearch = EmptyString)
+        public IQueryable<Product> GetAllByName(string nameSearch = EmptyString)
         {
             if (nameSearch != EmptyString)
             {
-                return await this.productRepo
+                return this.productRepo
                     .All()
-                    .Where(p => p.Name.ToLower().Contains(nameSearch.ToLower()))
-                    .ToArrayAsync();
+                    .Where(p => p.Name.ToLower().Contains(nameSearch.ToLower()));
             }
 
-            return await this.productRepo.All().ToArrayAsync();
+            return this.productRepo.All();
         }
 
-        public async Task<ICollection<Product>> GetAllByCategory(string categoryName = EmptyString)
+        public IQueryable<Product> GetAllByCategory(string categoryName = EmptyString)
         {
             if (categoryName != EmptyString)
             {
-                return await this.productRepo
+                return this.productRepo
                     .All()
-                    .Where(p => p.Category.Name.ToLower().Contains(categoryName.ToLower()))
-                    .ToArrayAsync();
+                    .Where(p => p.Category.Name.ToLower().Contains(categoryName.ToLower()));
             }
 
-            return await this.productRepo.All().ToArrayAsync();
+            return this.productRepo.All();
         }
 
         public async Task<Product> GetById(string id)
             => await this.productRepo.All().FirstOrDefaultAsync(p => p.Id == id);
+
+        public ICollection<string> GetAllProductsCategories()
+        {
+            return this.productRepo
+                .AllAsNoTracking()
+                .Select(p => p.Category.Name)
+                .ToArray();
+        }
     }
 }

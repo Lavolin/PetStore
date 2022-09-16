@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PetStore.Data.Models.Product>
+﻿@model PetStore.Web.ViewModels.Product.AllProductsViewModel
 
 @{
     ViewData["Title"] = "Product-All";
@@ -6,7 +6,7 @@
 
 <h1>All Products</h1>
 
-@if(User.IsInRole(GlobalConstants.AdministratorRoleName))
+@if(User.IsInRole(PetStore.Common.GlobalConstants.AdministratorRoleName))
 {
         <p>
             <a class="btn btn-info" asp-action="Create">Create New</a>
@@ -16,21 +16,35 @@
 <p>
     <a class="btn btn-info" asp-action="Create">Create New</a>
 </p>
+
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+    <label class="form-check-label" for="inlineRadio1">1</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+    <label class="form-check-label" for="inlineRadio2">2</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>
+    <label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
+</div>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Price
             </th>
 
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.AllProducts)
         {
             <tr>
                 <td>
@@ -41,9 +55,14 @@
                 </td>
 
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+
+                    @if (User.IsInRole(PetStore.Common.GlobalConstants.AdministratorRoleName))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                    
                 </td>
             </tr>
         }

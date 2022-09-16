@@ -1,11 +1,13 @@
 ﻿namespace PetStore.Web.Controllers
 {
     using System.Collections.Generic;
-    using System.Threading.Tasks;
-
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
+
     using PetStore.Data.Models;
     using PetStore.Services.Data;
+    using PetStore.Services.Mapping;
+    using PetStore.Web.ViewModels.Product;
 
     public class ProductController : BaseController
     {
@@ -17,11 +19,19 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> All(string search)
+        public IActionResult  All(string search)
         {
-            ICollection<Product> allProducts = await this.productService.GetAllByName();
+            IQueryable<Product> allProducts = this.productService.GetAllByName();
 
-            return this.View(allProducts);
+            ICollection<string> categories = this.productService.GetAllProductsCategories();
+
+            AllProductsViewModel viewModel = new AllProductsViewModel()
+            {
+                AllProducts = allProducts.To<ListAllProductViewModel>().ToArray(),
+                Categories = categories,
+            };
+
+            return this.View(viewModel);
         }
     }
 }
