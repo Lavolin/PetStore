@@ -15,5 +15,7 @@
         ICollection<string> GetAllProductsCategories();
 
         Task<Product> GetById(string id);
+
+        Task AddProduct(Product product);
     }
 }

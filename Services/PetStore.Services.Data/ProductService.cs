@@ -53,5 +53,11 @@
                 .Select(p => p.Category.Name)
                 .ToArray();
         }
+
+        public async Task AddProduct(Product product)
+        {
+            await this.productRepo.AddAsync(product);
+            await this.productRepo.SaveChangesAsync();
+        }
     }
 }

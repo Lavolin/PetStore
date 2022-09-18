@@ -7,5 +7,7 @@
     public interface ICategoryService
     {
         IQueryable<Category> All();
+
+        bool ExistById(int id);
     }
 }
