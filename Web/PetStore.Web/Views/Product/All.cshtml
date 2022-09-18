@@ -1,34 +1,55 @@
-﻿@model PetStore.Web.ViewModels.Product.AllProductsViewModel
+﻿@using PetStore.Common
+
+@model PetStore.Web.ViewModels.Product.AllProductsViewModel
 
 @{
     ViewData["Title"] = "Product-All";
 }
 
-<h1>All Products</h1>
+<div class="container">
+    <div class="col-md-4">
+        <h1>All Products</h1>
 
-@if(User.IsInRole(PetStore.Common.GlobalConstants.AdministratorRoleName))
-{
+        @*@if (User.IsInRole(GlobalConstants.AdministratorRoleName))
+        {
+            <p>
+                <a class="btn btn-info" asp-action="Create">Create New</a>
+            </p>
+        }*@
+       
         <p>
             <a class="btn btn-info" asp-action="Create">Create New</a>
         </p>
-}
 
-<p>
-    <a class="btn btn-info" asp-action="Create">Create New</a>
-</p>
+        @foreach (var category in Model.Categories)
+        {
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="@category" value="@category">
+                <label class="form-check-label" for="@category">@category</label>
+            </div>
+        }
+    </div>
+    <div class="col-md-6 justify-content-end">
+        <form method="get" asp-controller="Product" asp-action="All" class="mt-3">
+            <div class="input-group">
+                @if (Model.SearchQuery == null)
+                {
+                    <input type="text" id="search" name="search" class="form-control" placeholder="Search...">
+                }
+                else
+                {
+                    <input type="text" id="search" name="search" class="form-control" value="@Model.SearchQuery">
+                }
+                <div class="input-group-btn">
+                    <button class="btn btn-success m-auto" type="submit">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-    <label class="form-check-label" for="inlineRadio1">1</label>
-</div>
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-    <label class="form-check-label" for="inlineRadio2">2</label>
-</div>
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>
-    <label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
-</div>
 
 <table class="table">
     <thead>
@@ -55,14 +76,14 @@
                 </td>
 
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
 
-                    @if (User.IsInRole(PetStore.Common.GlobalConstants.AdministratorRoleName))
+                    @if (User.IsInRole(GlobalConstants.AdministratorRoleName))
                     {
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a class="btn btn-dark" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     }
-                    
+
                 </td>
             </tr>
         }

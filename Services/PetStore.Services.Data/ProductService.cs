@@ -21,7 +21,7 @@
 
         public IQueryable<Product> GetAllByName(string nameSearch = EmptyString)
         {
-            if (nameSearch != EmptyString)
+            if (nameSearch != null)
             {
                 return this.productRepo
                     .All()
