@@ -24,7 +24,7 @@
             if (nameSearch != null)
             {
                 return this.productRepo
-                    .All()
+                    .AllAsNoTracking()
                     .Where(p => p.Name.ToLower().Contains(nameSearch.ToLower()));
             }
 
@@ -36,7 +36,7 @@
             if (categoryName != EmptyString)
             {
                 return this.productRepo
-                    .All()
+                    .AllAsNoTracking()
                     .Where(p => p.Category.Name.ToLower().Contains(categoryName.ToLower()));
             }
 
@@ -51,6 +51,7 @@
             return this.productRepo
                 .AllAsNoTracking()
                 .Select(p => p.Category.Name)
+                .Distinct()
                 .ToArray();
         }
 
