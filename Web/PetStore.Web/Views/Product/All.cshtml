@@ -67,7 +67,7 @@
     <tbody>
         @foreach (var item in Model.AllProducts)
         {
-            <tr>
+            <tr name ="trData">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -99,7 +99,18 @@
     (function (){
         let checkBoxes = document.getElementsByName("categoryCheckbox");
         for (var box of checkBoxes) {
+            box.addEventListener('click', (e) => {
+                let targetValue = e.target.value;
 
+                let tableRows = document.getElementsByName("trData")
+                for (let row of tableRows)
+                {
+                    let categoryOfRow = row.childNodes.lastChild().value;
+                    if (categoryOfRow !== targetValue){
+                        row.parentNode.removeChild(row);
+                    }
+                } 
+            });
         }
     })();       
 </script>
